@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=g
-OUT=.
+OUT=build
 
 .PHONY: run clean
 
