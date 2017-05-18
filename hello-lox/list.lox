@@ -1,0 +1,119 @@
+class List {
+  init() {
+    this.first = nil;
+    this.last = nil;
+  }
+
+  count() {
+    var item = this.first;
+    var count = 0;
+    while (item != nil) {
+      count = count + 1;
+      item = item.next;
+    }
+    return count;
+  }
+
+  insertFirst(item) {
+    if (this.first != nil) {
+      this.insertBefore(this.first, item);
+    } else {
+      this.first = item;
+      this.last = item;
+    }
+  }
+  insertLast(item) {
+    if (this.last != nil) {
+      this.insertAfter(this.last, item);
+    } else {
+      this.first = item;
+      this.last = item;
+    }
+  }
+  insertBefore(second, first) {
+    first.prev = second.prev;
+    if (first.prev == nil) {
+      this.first = first;
+    } else {
+      first.prev.next = first;
+    }
+
+    first.next = second;
+    second.prev = first;
+  }
+  insertAfter(first, second) {
+    second.next = first.next;
+    if (second.next == nil) {
+      this.last = second;
+    } else {
+      first.next.prev = second;
+    }
+
+    second.prev = first;
+    first.next = second;
+  }
+
+  find(value) {
+    var item = this.first;
+    while (item != nil) {
+      if (item.value == value) {
+        return item;
+      }
+      item = item.next;
+    }
+    return nil;
+  }
+
+  remove(value) {
+    var item = this.first;
+    while (item != nil) {
+      if (item.value == value) {
+        var prev = item.prev;
+        var next = item.next;
+        if (prev == nil) {
+          this.first = next;
+        } else {
+          prev.next = next;
+        }
+        if (next == nil) {
+          this.last = nil;
+        } else {
+          next.prev = prev;
+        }
+        return item;
+      }
+      item = item.next;
+    }
+    return nil;
+  }
+
+  printItems() {
+    var i = this.first;
+    while (i != nil) {
+      print i.value;
+      i = i.next;
+    }
+  }
+}
+
+class Item {
+  init(value) {
+    this.value = value;
+    this.prev = nil;
+    this.next = nil;
+  }
+}
+
+var item = Item("middle");
+var list = List();
+list.insertFirst(item);
+list.insertFirst(Item("first"));
+list.insertBefore(item, Item("before"));
+list.insertAfter(item, Item("after"));
+list.insertLast(Item("last"));
+print list.count();
+list.printItems();
+print list.find("aft");
+print list.remove("first");
+print list.count();
+list.printItems();
